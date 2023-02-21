@@ -14,7 +14,7 @@ module.exports = (sequelize) => {
         return this.setDataValue('id', value.split(0, 7));
       } */
     },
-    name: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       validate: {
         min: 1,
-        max: 5
+        max: 10
       }
     },
     instructions: {

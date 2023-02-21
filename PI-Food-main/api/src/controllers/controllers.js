@@ -2,7 +2,7 @@ const { Recipe , Diet , User , Op } = require('../db');
 const axios = require('axios');
 const { checkPassword } = require('../helpers/encrypter');
 require('dotenv').config();
-const { API_KEY2 } = process.env;
+const { API_KEY3 } = process.env;
 
 // Controllers para manipular solo la BDD
 
@@ -34,29 +34,61 @@ const getUserByID = async (id) =>{
 
 const getUserRecipes = async (value) => {
     if(!value) {
-        const result = await Recipe.findAll({attributes: {exclude: ['instructions']}});
+
+        const result = await Recipe.findAll({
+            attributes: {
+                exclude: ['instructions']
+            },
+            include: {
+                model: Diet,
+                through: { attributes: [] }          
+            }
+        });
+
         if(!result.length) throw new Error(`User recipes not found`);
-        return result;
+
+        const recipe = result.map((recipe) => {
+            return {
+                id: recipe.id,
+                title: recipe.title,
+                diets: recipe.Diets.map((item) => item.name)
+            }
+        });
+        
+        return recipe;
     };
 
     const result = await Recipe.findAll({
         where: { 
-            name:  {
+            title:  {
                 [Op.iLike] : `%${value}%`
             } 
-        }, attributes: {exclude: ['instructions']}
+        }, 
+        attributes: {exclude: ['instructions']},
+        include: {
+            model: Diet,
+            through: { attributes: [] }          
+        }
     });
 
     if(!result.length) throw new Error(`User recipe ${value} not found`);
-
-    return result;
+    
+    const recipe = result.map((recipe) => {
+        return {
+            id: recipe.id,
+            title: recipe.title,
+            diets: recipe.Diets.map((item) => item.name)
+        }
+    });
+    
+    return recipe;
 };
 
 const getUserRecipeByID = async (id) => {
     if(!id) throw new Error(`Wrong ID`);
 
     const result = await Recipe.findByPk(id, {
-        attributes: ['name', 'summary', 'health_score', 'instructions'],
+        attributes: ['id', 'title', 'summary', 'health_score', 'instructions'],
         include: {
             model: Diet,
             through: { attributes: [] }          
@@ -64,15 +96,25 @@ const getUserRecipeByID = async (id) => {
     });
 
     if(!result) throw new Error(`User recipe ${id} not found`);
+    console.log(result);
 
-    return result;
+    const recipe = {
+        id: result.id,
+        title: result.title,
+        summary: result.summary,
+        health_score: result.health_score,
+        diets: result.Diets.map((item) => item.name),
+        instructions: result.instructions
+    };
+
+    return recipe;
 };
 
 const createRecipe = async (data, userId) => {
-    const { name , summary , health_score , instructions , diets } = data;
+    const { title , summary , health_score , instructions , diets } = data;
     // <diets> tiene que ser un array con el nombre de cada dieta
     
-    if(!name || !summary || !userId) throw new Error('Missing required data');
+    if(!title || !summary || !userId) throw new Error('Missing required data');
   
     try {
         // ['nombre de dieta', 'nombre de dieta'] => [ id, id ] - Obtenemos los id de las dietas
@@ -84,7 +126,7 @@ const createRecipe = async (data, userId) => {
             attributes: ['id']
         });
         
-        const newRecipe = await Recipe.create({ name, summary, health_score, instructions });
+        const newRecipe = await Recipe.create({ title, summary, health_score, instructions });
         await newRecipe.addDiets(dietsID);
         await newRecipe.setUser(userId);
         return newRecipe;
@@ -146,9 +188,21 @@ const createDiets = async () => {
 
 const getAllRecipes = async (value) => {
     // Traemos las recetas de la API
-    let result = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY2}`)
+    let apiResult = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY3}&addRecipeInformation=true&number=100`)
         .then((res) => res.data.results)
         .catch((err) => console.log(err.message));
+
+    let result = apiResult.map((item) => {
+       return {
+            id: item.id,
+            title: item.title,
+            image: item.image,
+            diets: item.diets
+        }
+    });
+    apiResult.vegetarian && result.diets.push('Vegetarian');
+    apiResult.vegan && result.diets.push('Vegan');
+
 
     // Filtrado del resultado si se le pasa query
     if(value) result = result.filter((item) => item.title.toLowerCase().includes(value));
@@ -169,7 +223,7 @@ const getAllRecipes = async (value) => {
 const getRecipeById = async (id) => {
     try {
         // Traemos las recetas de la API por su id
-        const result = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY2}`)
+        const result = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY3}`)
             .then((res) => res.data)
             .catch((err) => {
                 console.log(err.message);
@@ -177,17 +231,26 @@ const getRecipeById = async (id) => {
             });
         // Filtramos la info que queremos recibir  
         const recipe = {
+            id: result.id,
             title: result.title,
             image: result.image,
             summary: result.summary,
-            dietTypes: {
-                diets: result.diets,
-                vegetarian: result.vegetarian,
-                vegan: result.vegan, 
-                glutenFree: result.glutenFree
-            },
-            ingredients: result.extendedIngredients.map((item) => item.name)
+            health_score: result.healthScore,
+            diets: result.diets,
+            instructions: {
+                ingredients: result.extendedIngredients.map((item) => item.name),
+                cooking: result.analyzedInstructions[0]?.steps.map((item) => {
+                    return {
+                        number: item.number,
+                        step: item.step
+                    }
+                })
+            }
         };
+
+        result.vegetarian && recipe.diets.push('Vegetarian');
+        result.vegan && recipe.diets.push('Vegan');
+
         return recipe;
     } 
     catch (error) {

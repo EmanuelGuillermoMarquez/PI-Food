@@ -8,8 +8,8 @@ const recipesRouter = Router();
 
 recipesRouter.get('/', async (req, res) => {
     try {
-        const { name } = req.query;
-        res.status(200).send(await getAllRecipes(name));
+        const { key } = req.query;                             //recipes?key=xxx
+        res.status(200).send(await getAllRecipes(key));
     } 
     catch (error) {
         res.status(404).send(error.message);

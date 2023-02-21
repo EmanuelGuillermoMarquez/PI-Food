@@ -52,8 +52,8 @@ userRouter.post('/recipes', authentication, async (req, res) => {
 
 userRouter.get('/recipes', authentication, async (req, res) => {
     try {
-        const { name } = req.query;
-        res.status(200).send(await getUserRecipes(name));
+        const { key } = req.query;
+        res.status(200).send(await getUserRecipes(key));
     } 
     catch (error) {
         res.status(404).send(error.message);        
@@ -82,7 +82,7 @@ userRouter.delete('/recipes/:id', authentication, async (req, res) => {
 
 userRouter.put('/recipes/:id', authentication, async (req, res) => {
     try {
-        //  Ej.: req.body = { "atributte" : "name" ,	"value" : "Pollo al horno con papas" }
+        //  Ej.: req.body = { "atributte" : "title" ,	"value" : "Pollo al horno con papas" }
         const { id } = req.params;
         const { atributte , value } = req.body;
         res.status(200).send(await updateRecipe(id, atributte , value));
