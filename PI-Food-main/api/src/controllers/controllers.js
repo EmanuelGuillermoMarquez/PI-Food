@@ -2,7 +2,7 @@ const { Recipe , Diet , User , Op } = require('../db');
 const axios = require('axios');
 const { checkPassword } = require('../helpers/encrypter');
 require('dotenv').config();
-const { API_KEY3 } = process.env;
+const { API_KEY1 } = process.env;
 
 // Controllers para manipular solo la BDD
 
@@ -96,7 +96,6 @@ const getUserRecipeByID = async (id) => {
     });
 
     if(!result) throw new Error(`User recipe ${id} not found`);
-    console.log(result);
 
     const recipe = {
         id: result.id,
@@ -188,7 +187,7 @@ const createDiets = async () => {
 
 const getAllRecipes = async (value) => {
     // Traemos las recetas de la API
-    let apiResult = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY3}&addRecipeInformation=true&number=100`)
+    let apiResult = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY1}&addRecipeInformation=true&number=100`)
         .then((res) => res.data.results)
         .catch((err) => console.log(err.message));
 
@@ -221,9 +220,10 @@ const getAllRecipes = async (value) => {
 };
 
 const getRecipeById = async (id) => {
-    try {
-        // Traemos las recetas de la API por su id
-        const result = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY3}`)
+
+    if(!isNaN(id)) {
+        // Traemos las recetas de la API por su id siempre que sea un numero
+        const result = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY1}`)
             .then((res) => res.data)
             .catch((err) => {
                 console.log(err.message);
@@ -253,17 +253,13 @@ const getRecipeById = async (id) => {
 
         return recipe;
     } 
-    catch (error) {
-        console.log(error.message);
-    }
+    
     // Buscamos las recetas del usuario por el id ingresado
-    try {
+    if(typeof id === 'string' && id.length >= 35) {
         return await getUserRecipeByID(id);
     } 
-    catch (error) {
-        console.log(error.message);
-    };
-    // Si ningun try resulta ser positivo se arroja el error
+
+    // Si ningun if resulta ser positivo se arroja el error
     throw new Error(`A recipe with the id ${id} does not exist`);
 };
 

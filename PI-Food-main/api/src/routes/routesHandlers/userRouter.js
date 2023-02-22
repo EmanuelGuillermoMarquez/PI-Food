@@ -23,7 +23,7 @@ userRouter.post('/login', async (req, res) => {
     try {
         const result = await userLogin(req.body);
         res.cookie('userId', result.user.id, { maxAge: 1 * 60 * 60 * 1000, httpOnly: true })
-        res.status(200).send(result.response);
+        res.status(200).send(result);
     } 
     catch (error) {
         res.status(404).send(error.message);
