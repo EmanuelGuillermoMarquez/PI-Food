@@ -1,0 +1,74 @@
+.patern_container {
+    position: relative;
+    z-index: -2;
+    background-image: url(../../assets/Images/Landing-background2.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    /* background-position: center; */
+
+}
+
+.container {
+    position: relative;
+    z-index: -1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    min-height: 500px;
+    padding-top: 100px;
+    padding-bottom: 3rem;
+
+    background: linear-gradient(0deg, rgba(36, 36, 36, 1) 40%, rgba(0,0,0,0) 100%);
+
+    /* background: linear-gradient(transparent 40%, rgb(36, 36, 36, 1)45%); */
+    /* backdrop-filter: blur(1px); */
+
+}
+
+.user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.user img {
+    width: 200px;
+    height: 200px;
+    margin: 20px;
+}
+
+.info {
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 50%;
+    margin: 20px;
+}
+
+.btn {
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 50%;
+    margin: 20px;
+}
+
+.link {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin: 20px;
+}

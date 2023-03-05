@@ -1,0 +1,9 @@
+export const GET_USER_ACCESS = 'GET_USER_ACCESS';
+
+export const GET_ALL_RECIPES = 'GET_ALL_RECIPES';
+export const GET_USER_RECIPES = 'GET_USER_RECIPES';
+export const GET_RECIPE_DETAIL = 'GET_RECIPE_DETAIL';
+export const FILTER_RECIPES = 'GET_RECIPE_DETAIL';
+export const DELETE_RECIPE = 'DELETE_RECIPE';
+
+export const GET_DIETS = 'GET_DIETS';

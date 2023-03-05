@@ -2,7 +2,7 @@ const { Recipe , Diet , User , Op } = require('../db');
 const axios = require('axios');
 const { checkPassword } = require('../helpers/encrypter');
 require('dotenv').config();
-const { API_KEY1 } = process.env;
+const { API_KEY } = process.env;
 
 // Controllers para manipular solo la BDD
 
@@ -21,7 +21,7 @@ const userLogin = async (data) => {
     const user = await User.findOne({ where: { email } });
     if(!user) throw new Error('Invalid credentials');
 
-    if(checkPassword(password, user.password)) return { response: `${user.username} welcome back`, user};
+    if(checkPassword(password, user.password)) return { response: `${user.username} welcome back`, user: {id: user.id, username: user.username, email: user.email}};
     else throw new Error('Invalid password');
 
 };
@@ -51,7 +51,7 @@ const getUserRecipes = async (value) => {
             return {
                 id: recipe.id,
                 title: recipe.title,
-                diets: recipe.Diets.map((item) => item.name)
+                diets: recipe.Diets.map((item) => item.name.toLowerCase())
             }
         });
         
@@ -77,7 +77,7 @@ const getUserRecipes = async (value) => {
         return {
             id: recipe.id,
             title: recipe.title,
-            diets: recipe.Diets.map((item) => item.name)
+            diets: recipe.Diets.map((item) => item.name.toLowerCase())
         }
     });
     
@@ -102,7 +102,7 @@ const getUserRecipeByID = async (id) => {
         title: result.title,
         summary: result.summary,
         health_score: result.health_score,
-        diets: result.Diets.map((item) => item.name),
+        diets: result.Diets.map((item) => item.name.toLowerCase()),
         instructions: result.instructions
     };
 
@@ -176,7 +176,7 @@ const getDiets = async () => {
 const createDiets = async () => {
     // Esta funcion debe ejecutarse automaticamente al levantar el server para precargar la tabla de dietas en la BDD
 
-    const diets = [{name: 'Gluten Free'}, {name: 'Ketogenic'}, {name: 'Vegetarian'}, {name: 'Lacto-Vegetarian'}, {name: 'Ovo-Vegetarian'}, {name: 'Vegan'}, {name: 'Pescetarian'}, {name: 'Paleo'}, {name: 'Primal'}, {name: 'Low FODMAP'}, {name: 'Whole30'}];
+    const diets = [{name: 'Gluten Free'}, {name: 'Dairy Free'}, {name: 'Ketogenic'}, {name: 'Vegetarian'}, {name: 'Lacto Vegetarian'}, {name: 'Ovo Vegetarian'}, {name: 'Lacto Ovo Vegetarian'}, {name: 'Vegan'}, {name: 'Pescetarian'}, {name: 'Paleolithic'}, {name: 'Primal'}, {name: 'Low FODMAP'}, {name: 'Whole 30'}];
 
     return await Diet.bulkCreate(diets);
 };
@@ -187,7 +187,7 @@ const createDiets = async () => {
 
 const getAllRecipes = async (value) => {
     // Traemos las recetas de la API
-    let apiResult = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY1}&addRecipeInformation=true&number=100`)
+    let apiResult = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
         .then((res) => res.data.results)
         .catch((err) => console.log(err.message));
 
@@ -199,8 +199,8 @@ const getAllRecipes = async (value) => {
             diets: item.diets
         }
     });
-    apiResult.vegetarian && result.diets.push('Vegetarian');
-    apiResult.vegan && result.diets.push('Vegan');
+    apiResult.vegetarian && result.diets.push('vegetarian');
+    apiResult.vegan && result.diets.push('vegan');
 
 
     // Filtrado del resultado si se le pasa query
@@ -223,7 +223,7 @@ const getRecipeById = async (id) => {
 
     if(!isNaN(id)) {
         // Traemos las recetas de la API por su id siempre que sea un numero
-        const result = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY1}`)
+        const result = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`)
             .then((res) => res.data)
             .catch((err) => {
                 console.log(err.message);
@@ -248,8 +248,8 @@ const getRecipeById = async (id) => {
             }
         };
 
-        result.vegetarian && recipe.diets.push('Vegetarian');
-        result.vegan && recipe.diets.push('Vegan');
+        result.vegetarian && recipe.diets.push('vegetarian');
+        result.vegan && recipe.diets.push('vegan');
 
         return recipe;
     } 

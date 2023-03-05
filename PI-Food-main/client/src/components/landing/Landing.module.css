@@ -1,0 +1,116 @@
+.container {
+    position: relative;
+    z-index: -1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: black;
+
+    min-height: 100vh;
+    width: 100%;
+    padding-bottom: 3rem;
+
+    box-sizing: border-box;
+
+    background-image: url('../../assets/Images/Landing-background2.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+}
+
+.item_title {
+    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 45vh;
+    width: 100%;
+
+    color: antiquewhite;
+    text-shadow: 5px 5px 10px rgba(70, 70, 70, 0.5);
+    
+    
+}
+
+.item_section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    min-height: 50vh;
+    width: 90%;
+
+    
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    min-width: 300px;
+    width: 30%;
+    height: 300px;
+
+    margin-top: 50px;
+    
+
+    text-align: justify;
+
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(1px);
+    border-radius: 10px;
+
+    transition: 0.3s ease-out;
+
+}
+
+.item p {
+    margin: 10px;
+}
+
+.item ul {
+    margin: 10px;
+    padding-left: 20px;
+}
+
+.item_image {
+    position: relative;
+    width: 80%;
+    height: 40%;
+    transform: translateY(-50px);
+    transition: 0.3s ease-out;
+}
+
+.item_image img {
+    display: block;
+    width: 100%;
+    height: 120%;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px 0 rgba(70, 70, 70, 0.5);
+    
+}
+
+.item button {
+    margin: 20px;
+}
+
+.item:hover {
+    box-shadow: 5px 5px 5px 0 rgba(70, 70, 70, 0.5);
+}
+.item:hover .item_image {
+    transform: translateY(-40px);
+}
+
+.navlink {
+    text-decoration: none;
+    color: antiquewhite;
+}

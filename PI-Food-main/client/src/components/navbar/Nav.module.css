@@ -1,0 +1,39 @@
+.container {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 10%;
+    width: 100%;
+
+    background: linear-gradient(rgba(36, 36, 36, 1), rgba(53, 55, 57, 1));
+    
+    backdrop-filter: blur(2px);
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+
+
+}
+
+.item img {
+    width: 40px;
+    height: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
+    transition: 0.5s ease-in-out;
+}
+
+.item:hover > img {
+    rotate: -43deg;
+}
+
+.navlink {
+    text-decoration: none;
+    color: antiquewhite;
+}
