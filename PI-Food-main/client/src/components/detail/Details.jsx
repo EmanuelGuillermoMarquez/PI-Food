@@ -28,7 +28,7 @@ export default function Details(props) {
 
                 </ul>
 
-                <h4>Ingresdients:</h4>
+                <h4>Ingredients:</h4>
 
                 <ul className={style.ul_ingredients}>
 
