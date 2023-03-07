@@ -90,7 +90,7 @@ function UserContainer() {
 
     const deleteUserRecipe = async (id) => {
         console.log('Delete');
-        await axios.delete(`http://localhost:3001/user/recipes/${id}` , { withCredentials: true })
+        await axios.delete(`/user/recipes/${id}` , { withCredentials: true })
             .then((res) => window.alert(res.data))
             .catch((err) => {
                 console.log(err.message);

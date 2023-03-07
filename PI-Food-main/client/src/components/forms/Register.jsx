@@ -63,7 +63,7 @@ export default function Register() {
         
         //Axios new user
 
-        await axios.post(`http://localhost:3001/user/register`, {
+        await axios.post(`/user/register`, {
             username: userData.username,
             email: userData.email,
             password: userData.password

@@ -113,7 +113,7 @@ export default function UpdateRecipe() {
 
         // Axios
 
-        await axios.put(`http://localhost:3001/user/recipes/${updateRecipe}`, recipeData , { 
+        await axios.put(`/user/recipes/${updateRecipe}`, recipeData , { 
             withCredentials: true
         })
             .then((res) => {

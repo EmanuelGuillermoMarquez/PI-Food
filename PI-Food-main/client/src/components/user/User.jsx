@@ -1,9 +1,5 @@
 import React from 'react';
-import { useState , useEffect } from 'react';
-import { connect, useSelector, useDispatch} from 'react-redux';
-import { getUserRecipes } from '../../redux/actions/actions';
 import { Link } from 'react-router-dom';
-import Loader from '../loader/Loader';
 import styles from './User.module.css';
 
 

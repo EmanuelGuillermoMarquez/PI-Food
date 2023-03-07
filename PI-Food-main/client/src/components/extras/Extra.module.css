@@ -47,6 +47,17 @@
     object-fit: cover;
 }
 
+.item h2 {
+    color: rgb(50, 50, 50);
+    text-shadow: 1px 2px 15px antiquewhite;
+    transition: 1s;
+}
+
+.item:hover h2 {
+    text-shadow: 3px 5px 10px antiquewhite;
+    
+}
+
 .info {
     display: flex;
     flex-direction: column;
@@ -77,6 +88,7 @@
     margin: 10px;
     font-size: 15px;
     color: beige;
+    transition: 0.5s;
 }
 .redes i::before {
     width: 16px;
@@ -85,8 +97,8 @@
 
 }
 .redes a:hover {
-    text-shadow: 1px 2px 5px #4f9;
-    transition: 0.5s;
+    text-shadow: 1px 2px 5px antiquewhite;
+    
 }
 
 .container_error {

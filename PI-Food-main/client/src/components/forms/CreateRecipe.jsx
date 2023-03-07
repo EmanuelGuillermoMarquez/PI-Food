@@ -115,7 +115,7 @@ export default function CreateRecipe() {
 
         // Axios
 
-        await axios.post('http://localhost:3001/user/recipes', recipeData, { 
+        await axios.post('/user/recipes', recipeData, { 
             withCredentials: true,
         })
         .then((res) => {

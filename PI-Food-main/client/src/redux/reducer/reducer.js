@@ -1,4 +1,4 @@
-import { GET_USER_ACCESS , GET_ALL_RECIPES , GET_USER_RECIPES , GET_RECIPE_DETAIL , FILTER_RECIPES , DELETE_RECIPE , GET_DIETS } from '../actions/actionType';
+import { GET_USER_ACCESS , GET_USER_EXIT , GET_ALL_RECIPES , GET_USER_RECIPES , GET_RECIPE_DETAIL , FILTER_RECIPES , DELETE_RECIPE , GET_DIETS } from '../actions/actionType';
 
 const initialState = {
     user: null,
@@ -13,6 +13,11 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_USER_ACCESS:
+            return {
+                ...state,
+                user: action.payload
+            };
+        case GET_USER_EXIT:
             return {
                 ...state,
                 user: action.payload

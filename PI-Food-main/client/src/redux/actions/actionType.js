@@ -1,4 +1,5 @@
 export const GET_USER_ACCESS = 'GET_USER_ACCESS';
+export const GET_USER_EXIT = 'GET_USER_EXIT';
 
 export const GET_ALL_RECIPES = 'GET_ALL_RECIPES';
 export const GET_USER_RECIPES = 'GET_USER_RECIPES';

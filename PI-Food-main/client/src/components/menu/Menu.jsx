@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import styles from './Menu.module.css';
 
-export default function Menu() {
+export default function Menu(props) {
 
     const user = useSelector((state) => state.user);
     const labelRef = useRef();
@@ -38,6 +38,12 @@ export default function Menu() {
                     <NavLink to='/about' className={styles.navlink}>
                         <li>About</li>
                     </NavLink>
+
+                    {user?.username &&
+                        <li onClick={() => props.logOut()}>
+                            <i className='fas fa-power-off'></i>
+                        </li>
+                    }
 
                 </ul>
                 

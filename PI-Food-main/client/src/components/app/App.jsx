@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useState , useEffect } from 'react';
 import { useNavigate, useLocation, Routes , Route , NavLink, Navigate } from 'react-router-dom';
 import { useDispatch , useSelector } from 'react-redux';
-import { getAllRecipes , getDiets, getUserAccess, getRecipeDetail } from '../../redux/actions/actions';
+import { getAllRecipes , getDiets, getUserAccess, getRecipeDetail, getUserExit } from '../../redux/actions/actions';
 
 import Login from '../forms/Login';
 import NavBar from '../navbar/NavBar';
@@ -19,6 +19,8 @@ import About from '../extras/About';
 import Error from '../extras/Error';
 
 import styles from './App.module.css';
+
+axios.defaults.baseURL = 'http://localhost:3001';
  
 function App() {
 
@@ -34,12 +36,8 @@ function App() {
   
   const [userAccess, setUserAccess] = useState(false);
 
-  const [allRecipes , setAllRecipes] = useState(false);
-  
-  const [foundRecipes, setFoundRecipes] = useState(null);
-
   const [searchedRecipes, setSearchedRecipes] = useState(null);
-
+  
   const [keyword, setKeyword]  = useState(null);
   
   const [loading, setLoading] = useState(false);
@@ -50,7 +48,7 @@ function App() {
 
     dispatch(getUserAccess(userData));
 
-    const result = await axios.post('http://localhost:3001/user/login', userData , { withCredentials: true })
+    const result = await axios.post('/user/login', userData , { withCredentials: true })
       .then((res) => res.data)
       .catch((err) => console.log(err))
 
@@ -66,11 +64,11 @@ function App() {
     };
   };
 
-  const userLogOut = () => {
+  const userLogOut = async () => {
     if(userAccess) {
-      window.prompt('Are you sure you want to log out?');
+      dispatch(getUserExit());
       setUserAccess(false);
-      navigate('/login');
+      navigate('/');
     };
   };
 
@@ -88,60 +86,11 @@ function App() {
     setLoading(true);
 
     dispatch(getAllRecipes());
-  
-    setAllRecipes(true);
     
     setTimeout(() => {
-      setLoading(false);
+      if(recipes) setLoading(false);
       
-    }, 3000);
-  };
-
-  const onSearch = async (key) => {
-    setLoading(true);
-
-    // Search by ID
-    if(!isNaN(key) || key.length === 36) {
-      await axios.get(`http://localhost:3001/recipes/${key}`)
-        .then((res) => {
-          setFoundRecipes(res.data);
-          console.log('Ok');
-          navigate(`/recipe/${key}`);
-        })
-        .catch((err) => {
-          console.log(err.message);
-          window.alert(`Error: Recipe ${key} not found`);
-          navigate('/error');
-        });
-    }
-
-    // Search by Keyword
-    else {
-      await axios.get(`http://localhost:3001/recipes?key=${key}`)
-        .then((res) => {
-          setSearchedRecipes(res.data);
-          setKeyword(key);
-          console.log('Ok');
-          navigate('/home');
-        })
-        .catch((err) => {
-          console.log(err.message);
-          setSearchedRecipes([]);
-          setKeyword(key);
-          navigate('/home');
-        });
-    }
-
-    document.getElementById('searchInput').value=null;
-    setAllRecipes(false);
-    setLoading(false);
-  };
-
-  const onCloseSearch = () => {
-
-    setSearchedRecipes(null);
-    setKeyword(null);
-    console.log('close');
+    }, 1000);
 
   };
 
@@ -165,14 +114,62 @@ function App() {
 
   };
 
+  const onSearch = async (key) => {
+    setLoading(true);
+    navigate('/home');
+    
 
+    // Search by ID
+    if(!isNaN(key) || key.length === 36) {
+      await axios.get(`/recipes/${key}`)
+        .then((res) => {
+          console.log('Ok');
+          navigate(`/recipe/${key}`);
+        })
+        .catch((err) => {
+          console.log(err.message);
+          window.alert(`Error: Recipe ${key} not found`);
+          navigate('/error');
+        });
+        //navigate('/home');
+        //getRecipeDetails(key);
+        //console.log('Ok');
+    }
 
+    // Search by Keyword
+    else {
+      await axios.get(`/recipes?key=${key}`)
+        .then((res) => {
+          console.log('Ok');
+          setSearchedRecipes(res.data);
+          setKeyword(key);
+          navigate('/home');
+        })
+        .catch((err) => {
+          console.log(err.message);
+          setSearchedRecipes([]);
+          setKeyword(key);
+          navigate('/home');
+        });
+    }
+
+    document.getElementById('searchInput').value=null;
+    setLoading(false);
+  };
+
+  const onCloseSearch = () => {
+    setSearchedRecipes(null);
+    setKeyword(null);
+  };
 
 
   return (
     <>
         
-      <NavBar onSearch = {onSearch} />
+      <NavBar 
+        onSearch = {onSearch}
+        logOut = {userLogOut} 
+      />
 
       <Routes>
 

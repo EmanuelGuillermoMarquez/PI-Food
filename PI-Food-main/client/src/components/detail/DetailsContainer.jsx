@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { useState , useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams , useNavigate } from 'react-router-dom';
@@ -10,7 +9,7 @@ import Loader from '../loader/Loader';
 
 const DEFAULT_IMAGE = 'https://images.pexels.com/photos/1651166/pexels-photo-1651166.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
 
-function DetailsContainer(props) {
+function DetailsContainer() {
 
     const {id} = useParams();
 

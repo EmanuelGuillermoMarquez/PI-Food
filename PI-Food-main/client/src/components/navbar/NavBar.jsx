@@ -32,7 +32,7 @@ function NavBar(props) {
             
             { !isHidden && <SearchBar onSearch = {props.onSearch} />}
             
-            <Menu />
+            <Menu logOut = {props.logOut} />
             
         </nav>
     );

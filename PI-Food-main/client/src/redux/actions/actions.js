@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { GET_USER_ACCESS , GET_ALL_RECIPES , GET_USER_RECIPES , GET_RECIPE_DETAIL , FILTER_RECIPES , DELETE_RECIPE , GET_DIETS } from './actionType';
+import { GET_USER_ACCESS , GET_USER_EXIT , GET_ALL_RECIPES , GET_USER_RECIPES , GET_RECIPE_DETAIL , FILTER_RECIPES , DELETE_RECIPE , GET_DIETS } from './actionType';
 
 export function getUserAccess(userData) {
     return async (dispatch) => {
-        const user = await axios.post('http://localhost:3001/user/login', userData , { withCredentials: true })
+        const user = await axios.post('/user/login', userData , { withCredentials: true })
             .then((res) => {
                 console.log(res.data);
                 return res.data.user;
@@ -20,6 +20,19 @@ export function getUserAccess(userData) {
     };
 };
 
+export function getUserExit() {
+    return async (dispatch) => {
+        await axios.post('/user/logout', { withCredentials: true })
+            .then((res) => window.alert(res.data))
+            .catch((err) => window.alert(`Error Loggin Out: ${err}`));
+
+        dispatch({
+            type: GET_USER_EXIT,
+            payload: null
+        });
+    };
+};
+
 
 export function getAllRecipes(payload) {
     if(payload) return {
@@ -28,7 +41,7 @@ export function getAllRecipes(payload) {
     };
 
     return async (dispatch) => {
-        const result = await axios.get('http://localhost:3001/recipes', { withCredentials: true })
+        const result = await axios.get('/recipes', { withCredentials: true })
         .then((res) => res.data)
         .catch((err) => {
             console.log(err.message);
@@ -45,7 +58,7 @@ export function getAllRecipes(payload) {
 
 export function getUserRecipes() {
     return async (dispatch) => {
-        const result = await axios.get('http://localhost:3001/user/recipes', { withCredentials: true })
+        const result = await axios.get('/user/recipes', { withCredentials: true })
             .then((res) => res.data)
             .catch((err) => {
                 console.log(err.message);
@@ -61,7 +74,7 @@ export function getUserRecipes() {
 
 export function getRecipeDetail(id) {
     return async (dispatch) => {
-        const result = await axios.get(`http://localhost:3001/recipes/${id}`, { withCredentials: true })
+        const result = await axios.get(`/recipes/${id}`, { withCredentials: true })
             .then((res) => res.data)
             .catch((err) => {
                 console.log(err.message);
@@ -84,31 +97,9 @@ export function filterRecipes(value) {
     }
 };
 
-/* export function deleteRecipe(id) {
-    return async (dispatch) => {
-        await axios.delete(`http://localhost:3001/user/recipes/${id}` , { withCredentials: true })
-            .then((res) => res.data)
-            .catch((err) => {
-                console.log(err.message);
-                window.alert(`Error: Can not delete recipe ${id}`);
-        });
-        const result = await axios.get(`http://localhost:3001/user/recipes`)
-            .then((res) => res.data)
-            .catch((err) => {
-                console.log(err.message);
-                window.alert('Error updating user recipes. Try again');
-        });
-
-        dispatch({
-            type: DELETE_RECIPE,
-            payload: result
-        });
-    };
-};
- */
 export function getDiets() {
     return async (dispatch) => {
-        const result = await axios.get('http://localhost:3001/diets')
+        const result = await axios.get('/diets')
             .then((res) => res.data)
             .catch((err) => {
                 console.log(err.message);
