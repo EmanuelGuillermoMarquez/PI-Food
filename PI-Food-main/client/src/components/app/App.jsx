@@ -20,7 +20,7 @@ import Error from '../extras/Error';
 
 import styles from './App.module.css';
 
-axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.baseURL = 'https://pi-foodie-app.vercel.app/';
  
 function App() {
 
