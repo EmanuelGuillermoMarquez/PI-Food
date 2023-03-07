@@ -2,7 +2,7 @@ const { Recipe , Diet , User , Op } = require('../db');
 const axios = require('axios');
 const { checkPassword } = require('../helpers/encrypter');
 require('dotenv').config();
-const { API_KEY4 } = process.env;
+const { API_KEY } = process.env;
 
 // Controllers para manipular solo la BDD
 
@@ -187,7 +187,7 @@ const createDiets = async () => {
 
 const getAllRecipes = async (value) => {
     // Traemos las recetas de la API
-    let apiResult = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY4}&addRecipeInformation=true&number=100`)
+    let apiResult = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
         .then((res) => res.data.results)
         .catch((err) => console.log(err.message));
 
@@ -223,7 +223,7 @@ const getRecipeById = async (id) => {
 
     if(!isNaN(id)) {
         // Traemos las recetas de la API por su id siempre que sea un numero
-        const result = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY4}`)
+        const result = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`)
             .then((res) => res.data)
             .catch((err) => {
                 console.log(err.message);
