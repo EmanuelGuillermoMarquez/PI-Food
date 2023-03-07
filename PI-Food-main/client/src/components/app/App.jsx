@@ -88,7 +88,7 @@ function App() {
     dispatch(getAllRecipes());
     
     setTimeout(() => {
-      if(recipes) setLoading(false);
+      if(recipes.length) setLoading(false);
       
     }, 1000);
 
