@@ -1,8 +1,10 @@
 const server = require('./src/app.js');
 const { createDiets, createUser } = require('./src/controllers/controllers.js');
 const { db } = require('./src/db.js');
+require('dotenv').config();
+const { PORT } = process.env;
 
-const PORT = 3001;
+//const PORT = 3001;
 
 // Syncing all the models at once.
 db.sync({ force: true }).then(() => {
