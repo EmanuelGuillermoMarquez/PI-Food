@@ -4,7 +4,7 @@ const { checkPassword } = require('../helpers/encrypter');
 require('dotenv').config();
 const { API_KEY2 } = process.env;
 
-// Controllers para manipular solo la BDD
+// Controllers para manipular solo la BDD.
 
 
 const createUser = async (data) => {
