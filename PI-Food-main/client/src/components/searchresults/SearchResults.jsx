@@ -5,7 +5,7 @@ import styles from './Search.module.css'
 
 const DEFAULT_IMAGE = 'https://images.pexels.com/photos/1651166/pexels-photo-1651166.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
 const INITIAL_PAGE = 0;
-const ITEMS = 8;
+const ITEMS = 9;
 
 function SearchResults(props) {
 
@@ -14,10 +14,18 @@ function SearchResults(props) {
     //const userRecipes = useSelector((state) => state.userRecipes);
 
     const ref = useRef(null);
+
+    const sortTitleRef = useRef(null);
     
-    let filteredRecipes = [];
+    const sortScoreRef = useRef(null);
+
+    const [recipes, setRecipes] = useState(props.searchedRecipes);
     
-    const INITIAL_ITEMS = [...props.searchedRecipes].splice(INITIAL_PAGE, ITEMS);
+    const [filteredRecipes, setFilteredRecipes] = useState([]);
+
+    let orderedRecipes = [];
+    
+    const INITIAL_ITEMS = [...recipes].splice(INITIAL_PAGE, ITEMS);
 
     const [itemsPage, setItemsPage] = useState(INITIAL_ITEMS);
     const [currentPage, setCurrentPage] = useState(INITIAL_PAGE);
@@ -26,17 +34,8 @@ function SearchResults(props) {
         ref.current.scrollIntoView();        
     };
 
-    const handleFilter = (value) => {
-        if(value === 'All Diets') return setItemsPage(INITIAL_ITEMS);
-
-        filteredRecipes = props.searchedRecipes.filter((item) => item.diets.includes(value.toLowerCase()));
-        setItemsPage([...filteredRecipes].splice(INITIAL_PAGE, ITEMS));
-
-        console.log(value)
-    };
-
     const nextHandler = () => {
-        const totalElements = props.searchedRecipes.length;
+        const totalElements = recipes.length;
         const nextPage = currentPage +1;
         const indexNextPage = nextPage * ITEMS;
         
@@ -47,12 +46,59 @@ function SearchResults(props) {
             return;
         };
 
-        setItemsPage([...props.searchedRecipes].splice(indexNextPage, ITEMS));
+        setItemsPage([...recipes].splice(indexNextPage, ITEMS));
         setCurrentPage(nextPage);
         onScroll();
-    };
- 
 
+    };
+
+    const handleFilter = (value) => {
+        if(value === 'All Diets') {
+            //setFilteredRecipes([]);
+            setRecipes([...props.searchedRecipes]);
+            sortTitleRef.current.options.selectedIndex = 0;
+            sortScoreRef.current.options.selectedIndex = 0;
+            return //setItemsPage(INITIAL_ITEMS);
+        }
+
+        //setFilteredRecipes(props.searchedRecipes.filter((item) => item.diets.includes(value.toLowerCase())));
+
+        setRecipes([...props.searchedRecipes].filter((item) => item.diets.includes(value.toLowerCase())));
+
+        //setItemsPage([...filteredRecipes].splice(INITIAL_PAGE, ITEMS));
+
+        sortTitleRef.current.options.selectedIndex = 0;
+        sortScoreRef.current.options.selectedIndex = 0;
+
+        console.log(value);
+
+
+    };
+
+    const handleOrder = (e) => {
+
+        if(e.target.name === 'orderByTitle') {
+            e.target.value === 'upward' 
+                ? orderedRecipes = [...recipes].sort((itemA, itemB) => itemB.title.localeCompare(itemA.title))
+                : orderedRecipes = [...recipes].sort((itemA, itemB) => itemA.title.localeCompare(itemB.title))
+            return setRecipes([...orderedRecipes]);
+        
+        };
+
+        if(e.target.name === 'orderByScore') {
+            e.target.value === 'upward' 
+                ? orderedRecipes = [...recipes].sort((itemA, itemB) => itemA.health_score - itemB.health_score)
+                : orderedRecipes = [...recipes].sort((itemA, itemB) => itemB.health_score - itemA.health_score)
+            return setRecipes([...orderedRecipes]);
+            
+        };
+    };
+
+    useEffect(() => {
+        setItemsPage(INITIAL_ITEMS);
+    }, [recipes]);
+
+    
     return (
         <div className={styles.container}>
 
@@ -62,7 +108,8 @@ function SearchResults(props) {
             }
             
             
-            <div ref={ref} className={styles.filter} > 
+            <div ref={ref} className={styles.filter} >
+
                 <h3> Filter diets </h3>
 
                 <select name='diet' onChange={(e) => handleFilter(e.target.value)}>
@@ -72,6 +119,26 @@ function SearchResults(props) {
                     {diets.map((item, index) => (
                         <option key={index} value={item}>{item}</option>
                     ))}
+
+                </select>
+
+                <h3> Order by title </h3>
+
+                <select ref={sortTitleRef} name='orderByTitle' onChange={(e) => handleOrder(e)}>
+
+                    <option defaultValue={null} >Order...</option>
+                    <option value={'upward'} >Upward</option>
+                    <option value={'downward'} >Downward</option>
+                    
+                </select>
+
+                <h3> Order by score </h3>
+
+                <select ref={sortScoreRef} name='orderByScore' onChange={(e) => handleOrder(e)}>
+
+                    <option defaultValue={null} >Order...</option>
+                    <option value={'upward'} >Upward</option>
+                    <option value={'downward'} >Downward</option>
                     
                 </select>
 
@@ -85,7 +152,15 @@ function SearchResults(props) {
                 
                 <div className={styles.item} key={item.id} >
                     <img src={item.image ? item.image : DEFAULT_IMAGE} alt='img' />
-                    <h4>{item.title}</h4>
+                    
+                    <div className={styles.div_recipe}>
+                        <h4>{item.title}</h4>
+                        <p>{
+                            item.diets.map((diet) => diet[0].toUpperCase() + diet.slice(1)).join(', ')   
+                        }</p>
+                    </div>
+
+                    <h5>Healthy Score: {item.health_score}</h5>
 
                     {props.deleteUserRecipe && 
                     <button className={styles.button} onClick={() => {

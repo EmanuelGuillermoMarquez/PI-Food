@@ -4,7 +4,10 @@ export const GET_USER_EXIT = 'GET_USER_EXIT';
 export const GET_ALL_RECIPES = 'GET_ALL_RECIPES';
 export const GET_USER_RECIPES = 'GET_USER_RECIPES';
 export const GET_RECIPE_DETAIL = 'GET_RECIPE_DETAIL';
-export const FILTER_RECIPES = 'GET_RECIPE_DETAIL';
+export const FILTER_RECIPES = 'FILTER_RECIPES';
 export const DELETE_RECIPE = 'DELETE_RECIPE';
 
 export const GET_DIETS = 'GET_DIETS';
+
+export const ORDER_BY_TITLE = 'ORDER_BY_TITLE';
+export const ORDER_BY_SCORE = 'ORDER_BY_SCORE';

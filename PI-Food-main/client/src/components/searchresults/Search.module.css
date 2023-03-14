@@ -36,6 +36,7 @@
 
     height: 10%;
     width: 100%;
+    box-sizing: border-box;
 
     margin-bottom: 10px;
 
@@ -46,10 +47,10 @@
     transition: 0.3s ease-out;
 }
 
-.item h4 {
+/* .item h4 {
     width: 50%;
     
-}
+} */
 
 .item img {
     width: 100px;
@@ -62,6 +63,18 @@
 .item:hover {
     box-shadow: 1px 1px 20px 0px rgb(180, 180, 180, 0.5);
     
+}
+
+.div_recipe {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 50%;
+}
+
+.div_recipe h4, p {
+    margin: 10px 0;
 }
 
 .filter {
@@ -79,7 +92,7 @@
 .filter select {
     
     border-radius: 10px;
-    width: 20%;
+    width: 15%;
     height: 20px;
     border: black;
     

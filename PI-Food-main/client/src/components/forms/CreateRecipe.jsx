@@ -40,21 +40,58 @@ export default function CreateRecipe() {
         cooking:[], 
         diets: []
     };
+
+    const initialError = {
+        title: '',
+        summary: '',
+        health_score: ''
+    };
     
     const checkStatus = new Array(13).fill(false); // Esto esta hardcodeado tratar se hacerlo con las diets.length
 
     const [newRecipe, setNewRecipe] = useState(initialState);
 
+    const [errorState, setErrorState] = useState(initialError);
+
     const [isChecked, setIsChecked] = useState(checkStatus); 
 
     const countSteps = newRecipe.cooking.length +1;
+
+    const validateData = (value) => {
+
+        const regexTitle = /^[a-zA-Z]{0,20}$/i;
+        const regexSummary = /^[a-zA-Z0-9]{10,200}$/i;
+        const regexScore = /^[1-9]$/;
+
+        const error = {};
+
+        if(value.name === 'title') {
+            if(!value.value) error.title = 'Enter a title';
+            else if(!regexTitle.test(value.value)) error.title = 'Enter a title of up to 20 characters';
+            return error;
+        }
+        
+        if(value.name === 'summary') {
+            if(!value.value) error.summary = 'Enter a summary';
+            if(!regexSummary.test(value.value)) error.summary = 'Enter a summary between 10 and 200 characters';
+            return error;
+        }
+
+        if(value.name === 'health_score') {
+            if(!value.value) error.health_score = 'Enter a number';
+            if(!regexScore.test(value.value)) error.health_score = 'Enter a number between 1 and 9';
+            return error;
+        }
+
+        return;
+    }
 
 
     const handleClickBack = () => navigate(-1);
 
     const handleInputChange = (e) => {
         setNewRecipe( {...newRecipe, [e.target.name]: e.target.value} );
-        //console.log(e.target.name, e.target.value);
+        setErrorState(validateData(e.target));
     };
 
     const handleCheckboxChange = (e, position) => {
@@ -99,6 +136,16 @@ export default function CreateRecipe() {
         e.preventDefault();
 
         console.log('Clickeaste Create');
+
+        if(!newRecipe.title || !newRecipe.summary || !newRecipe.health_score) {
+            window.alert('Enter the required data');
+            return;
+        }
+
+        if(errorState.title || errorState.summary || errorState.health_score) {
+            window.alert('Enter the required data');
+            return;
+        }
 
         const recipeData = {
             title: newRecipe.title,
@@ -151,17 +198,20 @@ export default function CreateRecipe() {
 
                     <label>
                         <p>Title:</p>
-                        <input className={styles.input} type='text' name='title' value={newRecipe.title} placeholder='Enter a title' onChange={handleInputChange} required/>
+                        <input className={styles.input} type='text' name='title' value={newRecipe.title} placeholder='Enter a title' onChange={handleInputChange} />
+                        {errorState.title ? <p className={styles.error} >{errorState.title}</p> : <p className={styles.noerror}> ... </p>}
                     </label>
 
                     <label>
                         <p>Healthy score:</p>
-                        <input className={styles.input} type='number' min='1' max='9' name='health_score' value={newRecipe.health_score} placeholder='Enter a number from 0 to 9' onChange={handleInputChange}/>
+                        <input className={styles.input} type='number' /* min='1' max='9'  */name='health_score' value={newRecipe.health_score} placeholder='Enter a number from 0 to 9' onChange={handleInputChange} /* required *//>
+                        {errorState.health_score ? <p className={styles.error} >{errorState.health_score}</p> : <p className={styles.noerror}> ... </p>}
                     </label>
 
                     <label>
                         <p>Summary:</p>
-                        <textarea name='summary' rows='5' cols='50' value={newRecipe.summary} placeholder='Enter a summary' onChange={handleInputChange} required></textarea>
+                        <textarea name='summary' rows='5' cols='50' value={newRecipe.summary} placeholder='Enter a summary' onChange={handleInputChange} ></textarea>
+                        {errorState.summary ? <p className={styles.error} >{errorState.summary}</p> : <p className={styles.noerror}> ... </p>}
                     </label>
                     
                     <p>Ingredients:</p>

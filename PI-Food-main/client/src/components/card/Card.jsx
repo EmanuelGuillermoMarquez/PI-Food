@@ -14,6 +14,10 @@ function Card(props) {
             <div className={style.item}>
 
                 <h4>{props.title}</h4>
+
+                <p>{props.diets}</p>
+
+                <p>Healthy Score: {props.score}</p>
                 
                 {!props.image 
                     ? <i id={style.spinner} className='fas fa-spinner-third'></i> 

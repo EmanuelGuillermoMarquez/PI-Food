@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_USER_ACCESS , GET_USER_EXIT , GET_ALL_RECIPES , GET_USER_RECIPES , GET_RECIPE_DETAIL , FILTER_RECIPES , DELETE_RECIPE , GET_DIETS } from './actionType';
+import { GET_USER_ACCESS , GET_USER_EXIT , GET_ALL_RECIPES , GET_USER_RECIPES , GET_RECIPE_DETAIL , FILTER_RECIPES , GET_DIETS , ORDER_BY_TITLE , ORDER_BY_SCORE } from './actionType';
 
 export function getUserAccess(userData) {
     return async (dispatch) => {
@@ -113,4 +113,20 @@ export function getDiets() {
             payload: diets
         });
     };
+};
+
+export function orderRecipesByTitle(value) {
+    // Ordenar por el titulo
+    return {
+        type: ORDER_BY_TITLE,
+        payload: value
+    }
+};
+
+export function orderRecipesByScore(value) {
+    // Ordenar por el health score
+    return {
+        type: ORDER_BY_SCORE,
+        payload: value
+    }
 };

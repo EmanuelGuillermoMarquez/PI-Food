@@ -42,7 +42,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
     width: 100%;
     /* height: 50vh; */
@@ -53,14 +53,26 @@
     color: black;
 }
 
+.div_controllers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    align-self: center;
+    width: 100%;
+}
+
 .item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
-    height: 350px;
+    justify-content: space-between;
+    height: 400px;
     min-width: 250px;
     width: 20%;
+
+    box-sizing: border-box;
+    
     margin: 20px;
     
     background-color: rgba(85, 84, 84, 0.2);
@@ -78,6 +90,12 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    margin: 10px 0;
+}
+
+.item p {
+    font-size: 12px;
+    margin: 5px 0;
 }
 
 .item img {
@@ -85,6 +103,7 @@
     height: 200px;
     /* padding: 10px 10px; */
     border-radius: 15px;
+    margin-bottom: 10px;
     
 }
 
@@ -97,6 +116,27 @@
     transform: scale(1.05);
 }
 
+.filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 10%;
+    width: 100%;
+    margin-bottom: 10px;
+    color: antiquewhite;
+    text-shadow: 2px 2px 20px rgb(36, 36, 36, 1);
+}
+
+.filter select {
+    
+    border-radius: 10px;
+    width: 15%;
+    height: 20px;
+    border: black;
+    
+}
+
 .pageButton {
     height: 30px;
     width: 30px;
@@ -104,6 +144,16 @@
     padding: 2px 2px;
     margin: 10px;
     
+    
+}
+
+.pageButtonActive {
+    height: 30px;
+    width: 30px;
+    /* border-radius: 30px; */
+    padding: 2px 2px;
+    margin: 10px;
+    border-color: #64ff98
     
 }
 
@@ -123,8 +173,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
-    height: 350px;
+    justify-content: space-between;
+
+    box-sizing: border-box;
+
+    height: 400px;
     min-width: 250px;
     width: 20%;
     margin: 20px;

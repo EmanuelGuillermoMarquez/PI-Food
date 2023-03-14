@@ -55,6 +55,10 @@ export default function Register() {
         e.preventDefault();
         console.log('Clickeaste Register');
 
+        if(!userData.username || !userData.email || !userData.password) {
+            window.alert('Enter the required data');
+            return;
+        }
 
         if(userError.username || userError.email || userError.password) {
             window.alert('Enter the required data');
@@ -115,19 +119,19 @@ export default function Register() {
 
                     <label>
                         <p>Username:</p>
-                        <input className={styles.input} type='text' name='username' value={userData.username} placeholder='Enter a username' onChange={handleInputChange} required/>
+                        <input className={styles.input} type='text' name='username' value={userData.username} placeholder='Enter a username' onChange={handleInputChange} />
                         {userError.username ? <p className={styles.error} >{userError.username}</p> : <p className={styles.noerror}> ... </p>}
                     </label>
 
                     <label>
                         <p>Email:</p>
-                        <input className={styles.input} type='email' name='email' value={userData.email} placeholder='Enter a email@email.com' onChange={handleInputChange} required/>
+                        <input className={styles.input} type='email' name='email' value={userData.email} placeholder='Enter a email@email.com' onChange={handleInputChange} />
                         {userError.email ? <p className={styles.error} >{userError.email}</p> : <p className={styles.noerror}> ... </p>}
                     </label>
 
                     <label>
                         <p>Password:</p>
-                        <input className={styles.input} type='password' name='password' value={userData.password} placeholder='Enter a pa55word' onChange={handleInputChange} required autoComplete="new-password"/>
+                        <input className={styles.input} type='password' name='password' value={userData.password} placeholder='Enter a pa55word' onChange={handleInputChange}  autoComplete="new-password"/>
                         {userError.password ? <p className={styles.error} >{userError.password}</p> : <p className={styles.noerror}> ... </p>}
                     </label>
 

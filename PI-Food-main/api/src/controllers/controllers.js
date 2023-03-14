@@ -2,7 +2,7 @@ const { Recipe , Diet , User , Op } = require('../db');
 const axios = require('axios');
 const { checkPassword } = require('../helpers/encrypter');
 require('dotenv').config();
-const { API_KEY2 } = process.env;
+const { API_KEY5 } = process.env;
 
 // Controllers para manipular solo la BDD.
 
@@ -51,7 +51,8 @@ const getUserRecipes = async (value) => {
             return {
                 id: recipe.id,
                 title: recipe.title,
-                diets: recipe.Diets.map((item) => item.name.toLowerCase())
+                diets: recipe.Diets.map((item) => item.name.toLowerCase()),
+                health_score: recipe.health_score
             }
         });
         
@@ -187,7 +188,7 @@ const createDiets = async () => {
 
 const getAllRecipes = async (value) => {
     // Traemos las recetas de la API
-    let apiResult = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY2}&addRecipeInformation=true&number=100`)
+    let apiResult = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY5}&addRecipeInformation=true&number=100`)
         .then((res) => res.data.results)
         .catch((err) => console.log(err.message));
 
@@ -196,7 +197,8 @@ const getAllRecipes = async (value) => {
             id: item.id,
             title: item.title,
             image: item.image,
-            diets: item.diets
+            diets: item.diets,
+            health_score: item.healthScore
         }
     });
     apiResult.vegetarian && result.diets.push('vegetarian');
@@ -223,7 +225,7 @@ const getRecipeById = async (id) => {
 
     if(!isNaN(id)) {
         // Traemos las recetas de la API por su id siempre que sea un numero
-        const result = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY2}`)
+        const result = await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY5}`)
             .then((res) => res.data)
             .catch((err) => {
                 console.log(err.message);
