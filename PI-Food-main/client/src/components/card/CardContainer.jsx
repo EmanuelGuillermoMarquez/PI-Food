@@ -219,7 +219,7 @@ function CardContainer(props) {
 
                         {PAGES.map((item, index) => <button key={index} className= {currentPage+1 === item ? style.pageButtonActive : style.pageButton} onClick={() => onClickPageHandler(item)}> {item} </button>)}
 
-                        <button className= {style.pageButton} onClick={() => nextHandler()}>
+                        <button className= {currentPage +1 !== PAGES.length ? style.pageButton : style.noButton } onClick={() => nextHandler()}>
                                 <i className='fas fa-chevron-right'></i>
                         </button>
 
