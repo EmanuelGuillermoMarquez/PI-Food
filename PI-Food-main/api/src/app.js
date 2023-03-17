@@ -3,25 +3,17 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
-//const cors = require('cors');
-
-/* const corsOptions ={
-  origin:'http://localhost:5173', 
-  credentials: true,                 //access-control-allow-credentials:true
-  optionSuccessStatus:200
-}; */
 
 const server = express();
 
 server.name = 'API';
 
-//server.use(cors(corsOptions));
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
 server.use(morgan('dev'));
 server.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173'); //'http://localhost:5173''https://pi-foodie-app.vercel.app'
+  res.header('Access-Control-Allow-Origin', 'http://localhost:5173' || 'https://pi-foodie-app.vercel.app'); //    'http://localhost:5173'   'https://pi-foodie-app.vercel.app'
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');

@@ -59,27 +59,27 @@ export default function CreateRecipe() {
 
     const validateData = (value) => {
 
-        const regexTitle = /^[a-zA-Z]{0,20}$/i;
-        const regexSummary = /^[a-zA-Z0-9]{10,200}$/i;
+        const regexTitle = /^[a-zA-Z\s]{2,20}$/i;
+        const regexSummary = /^[a-zA-Z0-9\s]{10,255}$/i;
         const regexScore = /^[1-9]$/;
 
         const error = {};
 
         if(value.name === 'title') {
             if(!value.value) error.title = 'Enter a title';
-            else if(!regexTitle.test(value.value)) error.title = 'Enter a title of up to 20 characters';
+            else if(!regexTitle.test(value.value)) error.title = 'Enter a correct title between 2 and 20 characters';
             return error;
         }
         
         if(value.name === 'summary') {
             if(!value.value) error.summary = 'Enter a summary';
-            if(!regexSummary.test(value.value)) error.summary = 'Enter a summary between 10 and 200 characters';
+            else if(!regexSummary.test(value.value)) error.summary = 'Enter a correct summary between 10 and 255 characters';
             return error;
         }
 
         if(value.name === 'health_score') {
             if(!value.value) error.health_score = 'Enter a number';
-            if(!regexScore.test(value.value)) error.health_score = 'Enter a number between 1 and 9';
+            else if(!regexScore.test(value.value)) error.health_score = 'Enter a number between 1 and 9';
             return error;
         }
 

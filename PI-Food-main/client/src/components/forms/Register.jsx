@@ -10,29 +10,7 @@ export default function Register() {
     const navigate = useNavigate();
     
     const dispatch = useDispatch();
-
-    const handleClickBack = () => navigate(-1);
-
-    const validateData = (input) => {
-        const regexUsername = /^[a-zA-Z0-9]+$/;
-        const regexEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-        const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,10})/;
-        const error = {};
-
-
-        if(!input.username) error.username = 'Enter the required data';
-        else if(!regexUsername.test(input.username)) error.username = 'Enter a valid username';
-
-        if(!input.email) error.email = 'Enter the required data';
-        else if(!regexEmail.test(input.email)) error.email = 'Enter a valid email';
-
-        if(!input.password) error.password = 'Enter the required data';
-        else if(!regexPassword.test(input.password)) error.password = 'Enter a valid password';
-        else if(input.password?.length < 6 && input.password === 0) error.password = 'Enter a password longer than 6 characters';
-
-        return error;
-    }
-
+    
     const [userData, setUserData] = useState({
         username: '',
         email: '',
@@ -44,10 +22,40 @@ export default function Register() {
         email: '',
         password: '',
     });
-    
+
+    const handleClickBack = () => navigate(-1);
+
+    const validateData = (input) => {
+        const regexUsername = /^[a-zA-Z0-9]+$/;
+        const regexEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+        const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,10})/;
+        const error = {};
+
+        if(input.name === 'username') {
+            if(!input.value) error.username = 'Enter the required data';
+            else if(!regexUsername.test(input.value)) error.username = 'Enter a valid username';
+            return error;
+        };
+
+        if(input.name === 'email') {
+            if(!input.value) error.email = 'Enter the required data';
+            else if(!regexEmail.test(input.value)) error.email = 'Enter a valid email';
+            return error;
+        };
+
+        if(input.name === 'password') {
+            if(!input.value) error.password = 'Enter the required data';
+            else if(!regexPassword.test(input.value)) error.password = 'Enter a valid password';
+            else if(input.value?.length < 6 && input.value === 0) error.password = 'Enter a password longer than 6 characters';
+            return error;
+        };
+
+        return;
+    }
+
     const handleInputChange = (e) => {
         setUserData( {...userData, [e.target.name]: e.target.value} );
-        setUserError( validateData({...userData, [e.target.name]: e.target.value}) );
+        setUserError( validateData(e.target) );
     };
     
           
