@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { useState , useEffect } from 'react';
+import { useState , useEffect , useLayoutEffect } from 'react';
 import { useNavigate, useLocation, Routes , Route , NavLink, Navigate } from 'react-router-dom';
 import { useDispatch , useSelector } from 'react-redux';
 import { getAllRecipes , getDiets, getUserAccess, getRecipeDetail, getUserExit } from '../../redux/actions/actions';
@@ -17,7 +17,6 @@ import UpdateRecipe from '../forms/UpdateRecipe';
 import Register from '../forms/Register';
 import About from '../extras/About';
 import Error from '../extras/Error';
-
 import styles from './App.module.css';
 
 axios.defaults.baseURL = 'http://localhost:3001'; //'http://localhost:3001'; https://pi-food-production-718e.up.railway.app
@@ -80,6 +79,10 @@ function App() {
 
   }, []);
 
+  // Cada componente se muestra desde el inicio de pagina cuando se redirecciona la ruta
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const getRecipes = () => {
 
