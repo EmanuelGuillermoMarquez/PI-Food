@@ -19,7 +19,8 @@ import About from '../extras/About';
 import Error from '../extras/Error';
 import styles from './App.module.css';
 
-axios.defaults.baseURL = 'http://localhost:3001'; //'http://localhost:3001'; https://pi-food-production-718e.up.railway.app
+axios.defaults.baseURL = 'https://pi-food-production-718e.up.railway.app';
+//axios.defaults.baseURL = 'http://localhost:3001';
  
 function App() {
 
