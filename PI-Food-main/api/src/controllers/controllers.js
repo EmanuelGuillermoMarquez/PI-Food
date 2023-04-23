@@ -6,7 +6,6 @@ const { API_KEY } = process.env;
 
 // Controllers para manipular solo la BDD.
 
-
 const createUser = async (data) => {
     const { username , email , password } = data;
     if(!username || !email || !password) throw new Error('Missing required data');
